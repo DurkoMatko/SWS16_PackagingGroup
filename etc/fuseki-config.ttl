@@ -1,0 +1,61 @@
+@prefix fuseki: <http://jena.apache.org/fuseki#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ja: <http://jena.hpl.hp.com/2005/11/Assembler#> .
+
+<#touristicService>
+    rdf:type fuseki:Service
+  ; fuseki:name "ds" # http://host:port/ds
+  ; fuseki:serviceQuery "sparql" # SPARQL query service
+  ; fuseki:serviceQuery "query" # SPARQL query service (alt name)
+  ; fuseki:serviceUpdate "update" # SPARQL update service
+  ; fuseki:serviceUpload "upload" # Non-SPARQL upload service
+  ; fuseki:serviceReadWriteGraphStore "data" # SPARQL Graph store protocol (read and write)
+  # A separate read-only graph store endpoint:
+  ; fuseki:serviceReadGraphStore "get" # SPARQL Graph store protocol (read only)
+  ; fuseki:dataset <#touristicDataset>
+  .
+
+<#touristicDataset>
+    rdf:type ja:RDFDataset
+  ; rdfs:label "touristicData"
+  ; ja:defaultGraph <#touristicReasoned>
+  .
+
+<#touristicBaseModel>
+    rdf:type ja:MemoryModel
+  ; ja:content [
+      ja:externalContent
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/touristic_given.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/mock.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/ConcertHalls.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/museums.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/operaHouses.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/sportVenues.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/architecturalStructures.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/naturalPlaces.ttl>
+    ]
+  .
+
+<#touristicReasoned>
+    rdf:type ja:InfModel
+  ; ja:baseModel <#schemaReasoned>
+  ; ja:reasoner [
+        ja:rulesFrom <https://git.uibk.ac.at/csas7564/sws16/raw/master/etc/rules.ttl>
+    ]
+  .
+
+<#schemaReasoned>
+    rdf:type ja:InfModel
+  ; ja:baseModel <#touristicBaseModel>
+  ; ja:reasoner [ ja:schema <#schemaModel>
+      ; ja:reasonerURL <http://jena.hpl.hp.com/2003/OWLFBRuleReasoner> ]
+  .
+
+<#schemaModel>
+    rdf:type ja:MemoryModel
+  ; ja:content [
+      ja:externalContent
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/schema.ttl>
+    ]
+  .

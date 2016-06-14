@@ -1,0 +1,9 @@
+@prefix schema <http://schema.org/> .
+@prefix rdf <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+[inverseOffer:
+  (?s schema:makesOffer ?o)
+  (?s rdf:type schema:Organization)
+  ->
+  (?o schema:offeredBy ?s)
+  ]

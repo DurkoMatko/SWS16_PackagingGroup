@@ -1,0 +1,10 @@
+DELETE {?uriOld ?p ?o}
+INSERT {?uriNew ?p ?o}
+WHERE {
+  ?uriOld ?p ?o .
+  FILTER REGEX(STR(?uriOld), "http://tourpack.redlink.io/seekda/2015/") .
+  BIND (URI(REPLACE(STR(?uriOld),
+        "http://tourpack.redlink.io/seekda/2015/",
+        "http://localhost:8080/sws16/ServicePackaging/api/hotels/")
+    ) AS ?uriNew)
+}

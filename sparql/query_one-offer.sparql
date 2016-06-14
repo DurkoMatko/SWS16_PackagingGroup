@@ -1,0 +1,22 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <http://schema.org/>
+
+CONSTRUCT {
+  ?offerlnk ?p ?o.
+    ?img ?imgp ?imgo.
+    ?price ?pricep ?priceo.
+}
+WHERE {
+  ?offer rdf:type schema:Offer;
+  ?p ?o;
+  OPTIONAL {
+    ?offer schema:priceSpecification ?price.
+      ?price ?pricep ?priceo.
+  }
+  OPTIONAL {
+    ?offer schema:image ?img.
+      ?img ?imgp ?imgo.
+  }
+  ?offer schema:serialNumber "AT_ANT_ALTEPOSTALGENBEHAN";
+  BIND(IRI(CONCAT("http://dn.api/offers/", "AT_ANT_ALTEPOSTALGENBEHAN")) AS ?offerlnk)
+}

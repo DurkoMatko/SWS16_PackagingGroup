@@ -1,0 +1,25 @@
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+DELETE { ?s schema:latitude ?latOld }
+INSERT { ?s schema:latitude ?latNew }
+WHERE{
+  ?s schema:latitude ?latOld .
+  BIND(REPLACE(?latOld, "N|S", "") AS ?latNew)
+};
+
+DELETE { ?s schema:longitude ?lonOld }
+INSERT { ?s schema:longitude ?lonNew }
+WHERE{
+  ?s schema:longitude ?lonOld .
+  BIND(REPLACE(?lonOld, "E|W", "") AS ?lonNew)
+};
+
+DELETE {?s schema:latitude ?latOld; schema:longitude ?lonOld}
+INSERT {?s schema:latitude ?latNew; schema:longitude ?lonNew}
+WHERE {
+  ?s schema:latitude ?latOld; schema:longitude ?lonOld.
+  BIND(xsd:double(?latOld) AS ?latNew)
+  BIND(xsd:double(?lonOld) AS ?lonNew)
+}
+

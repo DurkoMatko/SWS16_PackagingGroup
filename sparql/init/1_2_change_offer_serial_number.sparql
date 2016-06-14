@@ -1,0 +1,11 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <http://schema.org/>
+
+DELETE {?offer schema:serialNumber ?id }
+INSERT {?offer schema:serialNumber ?fixed }
+WHERE {
+  ?offer rdf:type schema:Offer;
+         schema:serialNumber ?id .
+  FILTER REGEX(STR(?id), " ") .
+  BIND(REPLACE(STR(?id), " ", "_") AS ?fixed) .
+}

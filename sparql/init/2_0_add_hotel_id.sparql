@@ -1,0 +1,8 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <http://schema.org/>
+
+INSERT { ?hotel schema:branchCode ?id }
+WHERE {
+  ?hotel rdf:type schema:LodgingBusiness.
+  BIND(strafter(str(?hotel), "sws16/ServicePackaging/api/hotels/") AS ?id)
+}
