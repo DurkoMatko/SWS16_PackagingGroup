@@ -57,198 +57,212 @@ public class Offers{
 							     @QueryParam("radius") String radius,
 							     @QueryParam("city") String city,
 							     @QueryParam("maxprice") String maxprice,
+							     @QueryParam("minprice") String minprice,
 							     @QueryParam("order") String order,
 							     @QueryParam("reverse") String reverse,
 								 @QueryParam("offset") String offset,
 								 @QueryParam("limit") String limit){
-		String query="";
 
-		//api/offers?lat=<>&lon=<>&radius=<>&maxprice=<>&order=<>&reverse=<>
-		if(lat!=null && lon!=null){
-			double latLongDelta[]=null;
-			if(radius!=null){
-				latLongDelta=Helpers.radiusToLonLat(radius, lat);
-			}
-			/*   query builder  */
-			query = ""
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "	PREFIX schema: <http://schema.org/>\n"
-					+ "	CONSTRUCT {  \n"
-					+ "	  ?offerlnk rdf:type schema:Offer;    \n"
-					+ "	    schema:offeredBy ?hotel;\n"
-					+ "	    schema:teaser ?teaser;\n"
-					+ "	    schema:image ?img;\n"
-					+ "	    schema:priceSpecification ?priceSpec.\n"
-					+ "	  ?img schema:contentUrl ?imgUrl.\n"
-					+ "	  ?priceSpec schema:priceCurrency ?currency;\n"
-					+ "	    schema:price ?price.\n"
-					+ "	}WHERE { \n"
-					+ "	  ?offer rdf:type schema:Offer; \n"
-					+ "	    schema:serialNumber ?serial;	\n"
-					+ "	    schema:offeredBy ?hotel.\n"
-					+ "   ?hotel schema:geo ?geo.\n"
-					+ "   ?geo schema:latitude ?latitude;\n"
-					+ "        schema:longitude ?longitude. \n";
-					if(radius!=null){
-						query = query + "FILTER (?longitude - "+ lon +"<" + String.valueOf(latLongDelta[1])+ " && ?longitude -"+lon+" >-" + String.valueOf(latLongDelta[1])+ " && ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])+ " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ")\n";
-					}
-					if(maxprice!=null){
-						query = query + "FILTER (?price < "+ maxprice+ ")\n";
-					}
-					query = query + "	OPTIONAL {   \n"
-					+ "	    ?offer schema:priceSpecification ?priceSpec. \n"
-					+ "	    ?priceSpec schema:priceCurrency ?currency.\n"
-					+ "	    ?priceSpec schema:price ?price.\n"
-					+ "	}  "
-					+ "	OPTIONAL {   \n "
-					+ "	    ?offer schema:image ?img.\n"
-					+ "	    ?img schema:contentUrl ?imgUrl.\n"
-					+ "	} \n"
-					+ "	OPTIONAL{ \n"
-					+ "	    ?offer schema:teaser ?teaser.\n"
-					+ "	}\n"
-					+ "	BIND(IRI(CONCAT(\"http://localhost:8080/sws16/ServicePackaging/api/offers/\",?serial)) AS ?offerlnk)\n"
-					+ "	BIND((?longitude - "+ lon +")*(?longitude-"+lon+")+(?latitude - "+ lat +")*(?latitude - "+ lat +") AS ?distance)\n"
-					+ "}";
-				/*  ORDER BY part  */
-				if(order!=null && order.equals("price")){
-					if(reverse!=null && reverse.equals("true"))
-						query=query+"ORDER BY DESC(?price) ";
-					else{
-						query=query+"ORDER BY ASC(?price) ";
-					}
-				}
-				else{
-					if(reverse!=null && reverse.equals("true")){
-						query=query+ "ORDER BY DESC(?distance) ";
-					}
-					else{  //ascending by distance
-						query=query+ "ORDER BY ASC(?distance) ";
-					}
-				}
-				/// pagination
-				if(offset!=null && limit !=null){
-					query = query + "OFFSET "+offset+" LIMIT"+limit;
-				}
-				else if(offset==null && limit !=null){
-					query = query + " LIMIT " + limit;
-				}
-				else{
-					query = query + " LIMIT 10";
-				}
+    boolean geoGiven = lat!=null && lon!=null;
+    String qBindDistance = "";
+    if (geoGiven) qBindDistance = "BIND((?longitude - "+ lon +")*(?longitude-"+lon+")+(?latitude - "+ lat +")*(?latitude - "+ lat +") AS ?distance)\n";
 
-			}
+    boolean radiusGiven = radius!=null;
+    double latLongDelta[] = null;
+    if (geoGiven && radiusGiven) {
+      latLongDelta=Helpers.radiusToLonLat(radius, lat);
+    }
 
-		//api/offers?city<>&maxprice=<>
-		else if(city!=null){
-			query = ""
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "	PREFIX schema: <http://schema.org/>\n"
-					+ "	CONSTRUCT {  \n"
-					+ "	  ?offerlnk rdf:type schema:Offer;    \n"
-					+ "	    schema:offeredBy ?hotel;\n"
-					+ "	    schema:teaser ?teaser;\n"
-					+ "	    schema:image ?img;\n"
-					+ "	    schema:priceSpecification ?priceSpec.\n"
-					+ "	  ?img schema:contentUrl ?imgUrl.\n"
-					+ "	  ?priceSpec schema:priceCurrency ?currency;\n"
-					+ "	    schema:price ?price.\n"
-					+ "	}WHERE { \n"
-					+ "	  ?offer rdf:type schema:Offer; \n"
-					+ "	    schema:serialNumber ?serial;	\n"
-					+ "	    schema:offeredBy ?hotel.\n"
-					+ "   ?hotel schema:address ?address."
-					+ "   ?address schema:addressLocality ?locality."
-					+ "  FILTER (REGEX (?locality,\""+city+"\"))";
-					if(maxprice!=null){
-						query = query + "FILTER (?price < "+ maxprice+ ")\n";
-					}
-					query = query + "	OPTIONAL {   \n"
-					+ "	    ?offer schema:priceSpecification ?priceSpec. \n"
-					+ "	    ?priceSpec schema:priceCurrency ?currency.\n"
-					+ "	    ?priceSpec schema:price ?price.\n"
-					+ "	}  "
-					+ "	OPTIONAL {   \n "
-					+ "	    ?offer schema:image ?img.\n"
-					+ "	    ?img schema:contentUrl ?imgUrl.\n"
-					+ "	} \n"
-					+ "	OPTIONAL{ \n"
-					+ "	    ?offer schema:teaser ?teaser.\n"
-					+ "	}\n"
-					+ "	BIND(IRI(CONCAT(\"http://localhost:8080/sws16/ServicePackaging/api/offers/\",?serial)) AS ?offerlnk)\n"
-					+ "}";
+    // Filtering
+    String qFiltering = "";
+    if(geoGiven && radiusGiven) {
+      qFiltering = qFiltering
+        + "FILTER (?longitude - " + lon + "<" + String.valueOf(latLongDelta[1])
+        + " && ?longitude -" + lon + " >- " + String.valueOf(latLongDelta[1])
+        + " && ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])
+        + " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ").\n";
+    }
+    if(maxprice!=null){
+      qFiltering += "FILTER (?price < "+ maxprice+ ").\n";
+    }
+    if(minprice!=null){
+      qFiltering += "FILTER (?price > "+ minprice+ ").\n";
+    }
 
-					if(order!=null && order.equals("price")){
-						if(reverse!=null && reverse.equals("true"))
-							query=query+"ORDER BY DESC(?price)";
-						else{
-							query=query+"ORDER BY ASC(?price)";
-						}
-					}
-					else if(order!=null && order.equals("distance")){
-						return Response.status(422).entity("The request was well-formed but was unable to be followed due to semantic errors - Unexpected parameters combination").build();
-					}
-					//pagination
-					if(offset!=null && limit !=null){
-						query = query + "OFFSET "+offset+" LIMIT"+limit;
-					}
-					else if(offset==null && limit !=null){
-						query = query + " LIMIT " + limit;
-					}
-					else{
-						query = query + " LIMIT 10";
-					}
-		}
+    // Ordering
+    String qOrderBy = "ORDER BY ";
+    if(reverse!=null && order.equals("true"))
+      qOrderBy += "DESC";
+    else
+      qOrderBy += "ASC";
+    if(order!=null){
+      if(order.equals("price")) qOrderBy += "(?price)";
+    }
+    else if (geoGiven) {
+      qOrderBy += "(?distance)";
+    }
+    else {
+      qOrderBy += "(?serial)";
+    }
+    qOrderBy += "\n";
 
-		else if(lat!=null || lon!=null || radius!=null || maxprice!=null || order!=null || city !=null || reverse != null){
-			return Response.status(422).entity("The request was well-formed but was unable to be followed due to semantic errors - Unexpected parameters combination").build();
-		}
-		// api/offers
-		else {
-			query = ""
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "	PREFIX schema: <http://schema.org/>\n"
-					+ "	CONSTRUCT {  \n"
-					+ "	  ?offerlnk rdf:type schema:Offer;    \n"
-					+ "	    schema:offeredBy ?hotel;\n"
-					+ "	    schema:teaser ?teaser;\n"
-					+ "	    schema:image ?img;\n"
-					+ "	    schema:priceSpecification ?priceSpec.\n"
-					+ "	  ?img schema:contentUrl ?imgUrl.\n"
-					+ "	  ?priceSpec schema:priceCurrency ?currency;\n"
-					+ "	    schema:price ?price.\n"
-					+ "	}WHERE { \n"
-					+ "	  ?offer rdf:type schema:Offer; \n"
-					+ "	    schema:serialNumber ?serial;	\n"
-					+ "	    schema:offeredBy ?hotel.\n"
-					+ "   ?hotel schema:geo ?geo.\n"
-					+ "   ?geo schema:latitude ?latitude;\n"
-					+ "        schema:longitude ?longitude. \n"
-					+ "	OPTIONAL {   \n"
-					+ "	    ?offer schema:priceSpecification ?priceSpec. \n"
-					+ "	    ?priceSpec schema:priceCurrency ?currency.\n"
-					+ "	    ?priceSpec schema:price ?price.\n"
-					+ "	}  "
-					+ "	OPTIONAL {   \n "
-					+ "	    ?offer schema:image ?img.\n"
-					+ "	    ?img schema:contentUrl ?imgUrl.\n"
-					+ "	} \n"
-					+ "	OPTIONAL{ \n"
-					+ "	    ?offer schema:teaser ?teaser.\n"
-					+ "	}\n"
-					+ "	BIND(IRI(CONCAT(\"http://localhost:8080/sws16/ServicePackaging/api/offers/\",?serial)) AS ?offerlnk)\n"
-					+ "}";
-			//pagination
-			if(offset!=null && limit !=null){
-				query = query + "OFFSET "+offset+" LIMIT"+limit;
-			}
-			else if(offset==null && limit !=null){
-				query = query + " LIMIT " + limit;
-			}
-			else{
-				query = query + " LIMIT 10";
-			}
-		}
+    // Pagination
+    String qPagination = "";
+    if(offset!=null) qPagination = "OFFSET "+ offset + " ";
+    if(limit!=null) qPagination += "LIMIT " + limit;
+    else qPagination += "LIMIT 10";
+
+    // Build query
+    String query = ""
+      + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+      + "PREFIX schema: <http://schema.org/>\n"
+      + "	CONSTRUCT {  \n"
+      + "	  ?offerlnk rdf:type schema:Offer;    \n"
+      + "	    schema:offeredBy ?hotel;\n"
+      + "	    schema:teaser ?teaser;\n"
+      + "	    schema:image ?img;\n"
+      + "	    schema:priceSpecification ?priceSpec.\n"
+      + "	  ?img schema:contentUrl ?imgUrl.\n"
+      + "	  ?priceSpec schema:priceCurrency ?currency;\n"
+      + "	    schema:price ?price.\n"
+      + "	} WHERE { \n"
+      + "	  ?offer rdf:type schema:Offer; \n"
+      + "	    schema:serialNumber ?serial;	\n"
+      + "	    schema:offeredBy ?hotel.\n"
+      + "   ?hotel schema:geo ?geo.\n"
+      + "   ?geo schema:latitude ?latitude;\n"
+      + "        schema:longitude ?longitude. \n"
+      + qFiltering
+      + "	OPTIONAL {   \n"
+      + "	    ?offer schema:priceSpecification ?priceSpec. \n"
+      + "	    ?priceSpec schema:priceCurrency ?currency.\n"
+      + "	    ?priceSpec schema:price ?price.\n"
+      + "	}  "
+      + "	OPTIONAL {   \n "
+      + "	    ?offer schema:image ?img.\n"
+      + "	    ?img schema:contentUrl ?imgUrl.\n"
+      + "	} \n"
+      + "	OPTIONAL{ \n"
+      + "	    ?offer schema:teaser ?teaser.\n"
+      + "	}\n"
+      + "	BIND(IRI(CONCAT(\"http://localhost:8080/sws16/ServicePackaging/api/offers/\",?serial)) AS ?offerlnk)\n"
+      + qBindDistance
+      + "}"
+      + qOrderBy
+      + qPagination ;
+
+//		//	}
+//
+//		//api/offers?city<>&maxprice=<>
+//	//	else if(city!=null){
+//			query = ""
+//					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+//					+ "	PREFIX schema: <http://schema.org/>\n"
+//					+ "	CONSTRUCT {  \n"
+//					+ "	  ?offerlnk rdf:type schema:Offer;    \n"
+//					+ "	    schema:offeredBy ?hotel;\n"
+//					+ "	    schema:teaser ?teaser;\n"
+//					+ "	    schema:image ?img;\n"
+//					+ "	    schema:priceSpecification ?priceSpec.\n"
+//					+ "	  ?img schema:contentUrl ?imgUrl.\n"
+//					+ "	  ?priceSpec schema:priceCurrency ?currency;\n"
+//					+ "	    schema:price ?price.\n"
+//					+ "	}WHERE { \n"
+//					+ "	  ?offer rdf:type schema:Offer; \n"
+//					+ "	    schema:serialNumber ?serial;	\n"
+//					+ "	    schema:offeredBy ?hotel.\n"
+//					+ "   ?hotel schema:address ?address."
+//					+ "   ?address schema:addressLocality ?locality."
+//					+ "  FILTER (REGEX (?locality,\""+city+"\"))";
+//					if(maxprice!=null){
+//						query = query + "FILTER (?price < "+ maxprice+ ")\n";
+//					}
+//					query = query + "	OPTIONAL {   \n"
+//					+ "	    ?offer schema:priceSpecification ?priceSpec. \n"
+//					+ "	    ?priceSpec schema:priceCurrency ?currency.\n"
+//					+ "	    ?priceSpec schema:price ?price.\n"
+//					+ "	}  "
+//					+ "	OPTIONAL {   \n "
+//					+ "	    ?offer schema:image ?img.\n"
+//					+ "	    ?img schema:contentUrl ?imgUrl.\n"
+//					+ "	} \n"
+//					+ "	OPTIONAL{ \n"
+//					+ "	    ?offer schema:teaser ?teaser.\n"
+//					+ "	}\n"
+//					+ "	BIND(IRI(CONCAT(\"http://localhost:8080/sws16/ServicePackaging/api/offers/\",?serial)) AS ?offerlnk)\n"
+//					+ "}";
+//
+//					if(order!=null && order.equals("price")){
+//						if(reverse!=null && reverse.equals("true"))
+//							query=query+"ORDER BY DESC(?price)";
+//						else{
+//							query=query+"ORDER BY ASC(?price)";
+//						}
+//					}
+//					else if(order!=null && order.equals("distance")){
+//						return Response.status(422).entity("The request was well-formed but was unable to be followed due to semantic errors - Unexpected parameters combination").build();
+//					}
+//					//pagination
+//					if(offset!=null && limit !=null){
+//						query = query + "OFFSET "+offset+" LIMIT"+limit;
+//					}
+//					else if(offset==null && limit !=null){
+//						query = query + " LIMIT " + limit;
+//					}
+//					else{
+//						query = query + " LIMIT 10";
+//					}
+//		}
+//
+////		else if(lat!=null || lon!=null || radius!=null || maxprice!=null || order!=null || city !=null || reverse != null){
+//			return Response.status(422).entity("The request was well-formed but was unable to be followed due to semantic errors - Unexpected parameters combination").build();
+//		}
+//		// api/offers
+////		else {
+//			query = ""
+//					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+//					+ "	PREFIX schema: <http://schema.org/>\n"
+//					+ "	CONSTRUCT {  \n"
+//					+ "	  ?offerlnk rdf:type schema:Offer;    \n"
+//					+ "	    schema:offeredBy ?hotel;\n"
+//					+ "	    schema:teaser ?teaser;\n"
+//					+ "	    schema:image ?img;\n"
+//					+ "	    schema:priceSpecification ?priceSpec.\n"
+//					+ "	  ?img schema:contentUrl ?imgUrl.\n"
+//					+ "	  ?priceSpec schema:priceCurrency ?currency;\n"
+//					+ "	    schema:price ?price.\n"
+//					+ "	}WHERE { \n"
+//					+ "	  ?offer rdf:type schema:Offer; \n"
+//					+ "	    schema:serialNumber ?serial;	\n"
+//					+ "	    schema:offeredBy ?hotel.\n"
+//					+ "   ?hotel schema:geo ?geo.\n"
+//					+ "   ?geo schema:latitude ?latitude;\n"
+//					+ "        schema:longitude ?longitude. \n"
+//					+ "	OPTIONAL {   \n"
+//					+ "	    ?offer schema:priceSpecification ?priceSpec. \n"
+//					+ "	    ?priceSpec schema:priceCurrency ?currency.\n"
+//					+ "	    ?priceSpec schema:price ?price.\n"
+//					+ "	}  "
+//					+ "	OPTIONAL {   \n "
+//					+ "	    ?offer schema:image ?img.\n"
+//					+ "	    ?img schema:contentUrl ?imgUrl.\n"
+//					+ "	} \n"
+//					+ "	OPTIONAL{ \n"
+//					+ "	    ?offer schema:teaser ?teaser.\n"
+//					+ "	}\n"
+//					+ "	BIND(IRI(CONCAT(\"http://localhost:8080/sws16/ServicePackaging/api/offers/\",?serial)) AS ?offerlnk)\n"
+//					+ "}";
+//			//pagination
+//			if(offset!=null && limit !=null){
+//				query = query + "OFFSET "+offset+" LIMIT"+limit;
+//			}
+//			else if(offset==null && limit !=null){
+//				query = query + " LIMIT " + limit;
+//			}
+//			else{
+//				query = query + " LIMIT 10";
+//			}
+//		}
 
 		Model results = QueryExecutionFactory.sparqlService(dbUri, query).execDescribe();
 		ByteArrayOutputStream outputStream =Helpers.modelToJsonLD(results);
