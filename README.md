@@ -9,7 +9,7 @@ Instructions
 ------------
 
 This application consists of two parts - a triple store built with 
-Apache Jena Fuseki and Http request handler using Jetty, Jena and 
+Apache Jena Fuseki and Http request handler using Jena and 
 Jersey.
 
 ### Triple Store
