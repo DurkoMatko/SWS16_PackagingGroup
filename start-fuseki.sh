@@ -1,12 +1,8 @@
 #!/bin/bash
 
 # load environment
+source ~/.swsrc
 
-JENA_HOME=$HOME/opt/apache-jena-3.0.1
-FUSEKI_HOME=$HOME/opt/apache-jena-fuseki-2.3.1
-PROJECT_HOME=$HOME/uibk/sws/project/git
-
-export PATH=$FUSEKI_HOME/bin:$JENA_HOME/bin:$PATH
 
 ### CONFIGURATION
 
@@ -39,3 +35,4 @@ done
 
 # start fuseki in mem
 (cd $wrkdir; $FUSEKI_HOME/fuseki-server --localhost --config $cfgfile)
+
