@@ -25,7 +25,7 @@ mkdir $wrkdir
 
 # Wait for fuseki
 
-sleep 20;
+sleep 40;
 
 # Beautify data by iterating over corresponding folder
 
