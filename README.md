@@ -42,8 +42,14 @@ from within the repository's base folder.
 
 ### Request handler
 
-A simple `mvn clean install exec:java` should suffice to build an bring 
-up the request handler. It will listen on port 8080 by default. A good 
-point to start is [this overview][wadl] of endpoints.
+Assuming, that you you have Apache maven installed, a simple
+
+```sh
+mvn clean install exec:java
+```
+
+should suffice to build an bring up the request handler. It will listen 
+on port 8080 by default. A good point to start is [this overview][wadl] 
+of endpoints.
 
 [wadl]:http://localhost:8080/application.wadl
