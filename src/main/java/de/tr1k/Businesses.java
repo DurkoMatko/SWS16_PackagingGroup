@@ -160,7 +160,7 @@ public class Businesses{
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("hotels/{id}")
+	@Path("{id}")
 	public Response hotel(@PathParam("id") String id){
 		Model results = QueryExecutionFactory.sparqlService(dbUri, ""
 				+ "PREFIX schema: <http://schema.org/>\n"

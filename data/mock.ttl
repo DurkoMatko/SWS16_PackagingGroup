@@ -104,6 +104,8 @@
 
 <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:startDate "2016-06-27"^^xsd:string .
 
+<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:endDate "2016-06-27"^^xsd:string .
+
 <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:BuyAction "http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111/buyTickets"^^xsd:anyURI .
 
 <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:geo [
@@ -119,6 +121,8 @@
 <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:Description "5km + 10km"^^xsd:string .
 
 <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:startDate "2016-07-03"^^xsd:string .
+
+<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:endDate "2016-07-03"^^xsd:string .
 
 <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:geo [
 	schema:longitude "47.799";
