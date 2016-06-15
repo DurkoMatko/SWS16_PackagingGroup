@@ -22,7 +22,7 @@ mkdir $wrkdir
 (
 
 #wait for server
-sleep 20;
+sleep 40;
 
 # beautify data by iterating over corresponding folder
 for sparql in $PROJECT_HOME/sparql/init/*.sparql
