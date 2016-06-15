@@ -61,23 +61,6 @@
 ].
 
 
-<http://www.salzburgerfestspiele.at> a schema:Festival .
-
-<http://www.salzburgerfestspiele.at> schema:image "http://magazin.salzburgerland.com/wp-content/uploads/2012/06/festspielnaechte8.jpg"^^xsd:anyURI .
-
-<http://www.salzburgerfestspiele.at> schema:name "Salzburger Festspiele"^^xsd:string .
-
-<http://www.salzburgerfestspiele.at> schema:endDate "2016-08-31"^^xsd:string .
-
-<http://www.salzburgerfestspiele.at> schema:startDate "2016-07-22"^^xsd:string .
-
-<http://www.salzburgerfestspiele.at> schema:BuyAction "https://www.salzburg-ticketshop.at/de/salzburger_festspiele"^^xsd:anyURI .
-
-<http://www.salzburgerfestspiele.at> schema:geo [
-	schema:longitude "47.92446N"^^xsd:string;
-	schema:latitude "13.0419E"^^xsd:string;
-].
-
 <http://www.streetfood-festival.eu/info.html> a schema:Festival .
 
 <http://www.streetfood-festival.eu/info.html> schema:Description "Travel around the Europe"^^xsd:string .
