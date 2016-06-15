@@ -56,8 +56,8 @@
 <http://www.restaurantherzl.at/de/> schema:ReserveAction "http://www.restaurantherzl.at/Reservierung/de/"^^xsd:anyURI .
 
 <http://www.restaurantherzl.at/de/> schema:geo [
-	schema:longitude "47.82646"^^xsd:double;
-	schema:latitude "13.0219"^^xsd:double;
+	schema:longitude xsd:double("47.82646");
+	schema:latitude xsd:double("13.0219");
 ].
 
 
@@ -210,7 +210,7 @@
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:name "Hotel Innsbruck"^^xsd:string .
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:geo [
-	schema:longitude "47.899"^^xsd:double;
-	schema:latitude "13.015"^^xsd:double;
+	schema:longitude "47.899";
+	schema:latitude "13.015";
 ].
 
