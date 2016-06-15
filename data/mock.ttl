@@ -56,8 +56,8 @@
 <http://www.restaurantherzl.at/de/> schema:ReserveAction "http://www.restaurantherzl.at/Reservierung/de/"^^xsd:anyURI .
 
 <http://www.restaurantherzl.at/de/> schema:geo [
-	schema:longitude "47.82646N"^^xsd:string;
-	schema:latitude "13.0219E"^^xsd:string;
+	schema:longitude "47.82646N"^^xsd:string,
+	schema:latitude "13.0219E"^^xsd:string
 ].
 
 
