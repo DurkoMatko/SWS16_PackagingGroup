@@ -3,7 +3,7 @@
 ### Configure your environment here
 
 PROJECT_HOME=$PWD
-FUSEKI_HOME=$HOME/opt/apache-jena-fuseki-2.3.1
+export FUSEKI_HOME=$HOME/opt/apache-jena-fuseki-2.3.1
 
 ### Other configuration
 
