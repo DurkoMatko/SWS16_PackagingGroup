@@ -139,16 +139,16 @@ public class Businesses{
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("{id}")
+  @Path("{branchCode}")
   public Response businessDetail(
-      @PathParam("id") String id
+      @PathParam("branchCode") String branchCode
       ){
 
     // Build query
     String select = ""
       + "    SELECT ?s WHERE {\n"
       + "      ?s rdf:type schema:LocalBusiness.\n"
-      + "      ?s schema:branchCode \"" + id + "\".\n"
+      + "      ?s schema:branchCode \"" + branchCode + "\".\n"
       + "    }\n"
       ;
 
