@@ -35,7 +35,7 @@ If everything went right, you should be able to start a data-filled
 fuseki with
 
 ```sh
-./start-fuseki.sh
+make db
 ```
 
 from within the repository's base folder. The script waits some time for 
