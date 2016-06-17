@@ -52,7 +52,8 @@ public class Businesses{
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response businessList(@QueryParam("lon") String lon,
+  public Response businessList(
+      @QueryParam("lon") String lon,
       @QueryParam("lat") String lat,
       @QueryParam("radius") String radius,
       @QueryParam("city") String city,
@@ -60,30 +61,32 @@ public class Businesses{
       @QueryParam("type") String type,
       @QueryParam("reverse") String reverse,
       @QueryParam("offset") String offset,
-      @QueryParam("limit") String limit){
+      @QueryParam("limit") String limit
+      ){
 
     // Location ?
     boolean geoGiven = lat!=null && lon!=null;
     String qBindDistance = "";
-    if (geoGiven) qBindDistance =
-      "BIND((?longitude - "+ lon +")*(?longitude-"+lon
-        + ")+(?latitude - "+ lat +")*(?latitude - "+ lat +") AS ?distance)\n";
+    if (geoGiven) {
+      qBindDistance = qBindDistance
+        + "?s schema:geo/schema:longitude ?slon.\n"
+        + "?s schema:geo/schema:latitude ?slat.\n"
+        + "BIND(47.16 AS ?lat).\n"
+        + "BIND(11.24 AS ?lon).\n"
+        + "BIND((?lon-?slon) AS ?a).\n"
+        + "BIND((?lat-?slat) AS ?b).\n"
+        + "BIND(?a*?a + ?b*?b AS ?distance).\n"
+        ;
+    }
 
     // Filtering
     String qFiltering = "";
-    if(type!=null) qFiltering += "?subject rdf:type schema:" + type + ".\n";
+    if(type!=null) qFiltering += "?s rdf:type schema:" + type + ".\n";
 
-    boolean radiusGiven = radius!=null;
-    double latLongDelta[] = null;
-    if (geoGiven && radiusGiven) {
-      latLongDelta=Helpers.radiusToLonLat(radius, lat);
-    }
-    if(geoGiven && radiusGiven) {
-      qFiltering = qFiltering
-        + "FILTER (?longitude - " + lon + "<" + String.valueOf(latLongDelta[1])
-        + " && ?longitude -" + lon + " >- " + String.valueOf(latLongDelta[1])
-        + " && ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])
-        + " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ").\n";
+    if(geoGiven && radius!=null) {
+      double dRadius = Double.parseDouble(radius);
+      double dRSquared = dRadius * dRadius;
+      qFiltering += "FILTER (?distance < " + String.valueOf(dRSquared) +").\n";
     }
 
     // Ordering
@@ -94,7 +97,7 @@ public class Businesses{
       qOrderBy += "ASC";
     if(order!=null){
       if(order.equals("branchCode")) qOrderBy += "(?branchCode)";
-      if(order.equals("distance")) qOrderBy += "(?distance)";
+      if(order.equals("distance") && geoGiven) qOrderBy += "(?distance)";
     }
     else if (geoGiven) {
       qOrderBy += "(?distance)";
@@ -106,57 +109,48 @@ public class Businesses{
 
     // Pagination
     String qPagination = "";
-    if(offset!=null) qPagination = "OFFSET "+ offset + " ";
+    if(offset!=null) qPagination += "OFFSET "+ offset + " ";
     if(limit!=null) qPagination += "LIMIT " + limit;
-    else qPagination += "LIMIT 100";
+    else qPagination += "LIMIT 5";
 
     // Build query
-    String query=""
-      + "PREFIX schema: <http://schema.org/>\n"
-      + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-      + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-      + "CONSTRUCT {"
-      + "  ?subject rdf:type ?type;"
-      + "    schema:makesOffer ?offerlnk;"
-      + "    schema:name ?name;"
-      + "}"
-      + "WHERE {"
-      + "  ?subject rdf:type schema:LocalBusiness, ?type;"
-      + "    schema:name ?name;"
-      + "    schema:branchCode ?branchCode;"
-      + "	   schema:geo ?geo."
-      + "	 ?geo schema:longitude ?longitude;"
-      + "		schema:latitude ?latitude."
-      + qFiltering
-      + "  OPTIONAL {"
-      + "    ?subject schema:makesOffer ?offer."
-      + "    ?offer schema:serialNumber ?serialNumber."
-      + "    BIND(IRI(CONCAT(\"" + urlprefix + "offers/\", ?serialNumber)) AS ?offerlnk)."
-      + qBindDistance
-      + "  }"
-      + "}"
-      + qOrderBy
-      + qPagination;
+    String select = ""
+      + "    SELECT ?s WHERE {\n"
+      + "      ?s rdf:type schema:LocalBusiness.\n"
+      + "      ?s schema:branchCode ?branchCode.\n"
+      +        qFiltering
+      +        qBindDistance
+      + "    }\n"
+      +      qOrderBy
+      +      qPagination
+      ;
+
+    String query = Helpers.queryFromInnerSelect(select);
 
     Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
     return Response.status(200).entity(outputStream.toString()).build();
-  }
+      }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("{id}")
-  public Response businessDetail(@PathParam("id") String id){
-    Model results = QueryExecutionFactory.sparqlService(dbUri, ""
-        + "PREFIX schema: <http://schema.org/>\n"
-        + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-        + "DESCRIBE ?subject WHERE {\n"
-        + "  ?subject rdf:type schema:LocalBusiness;\n"
-        + "    schema:branchCode \"" + id + "\"."
-        + " "
-        + "}"
-        ).execDescribe();
+  public Response businessDetail(
+      @PathParam("id") String id
+      ){
+
+    // Build query
+    String select = ""
+      + "    SELECT ?s WHERE {\n"
+      + "      ?s rdf:type schema:LocalBusiness.\n"
+      + "      ?s schema:branchCode \"" + id + "\".\n"
+      + "    }\n"
+      ;
+
+    String query = Helpers.queryFromInnerSelect(select);
+
+    Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
     return Response.status(200).entity(outputStream.toString()).build();
-  }
+      }
 }
