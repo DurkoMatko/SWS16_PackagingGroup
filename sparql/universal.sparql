@@ -1,0 +1,33 @@
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+CONSTRUCT {
+  ?s ?p ?o.
+  ?img ?imgp ?imgo.
+  ?address ?addressp ?addresso.
+  ?country ?countryp ?countryo.
+  ?price ?pricep ?priceo.
+  ?geo ?geop ?geoo.
+}
+WHERE {
+  {
+    SELECT ?s WHERE {
+      ?s rdf:type schema:LocalBusiness;
+        schema:geo/schema:longitude ?slon;
+        schema:geo/schema:latitude ?slat.
+      BIND(47.16 AS ?lat).
+      BIND(11.24 AS ?lon).
+      BIND((?lon-?slon) AS ?a).
+      BIND((?lat-?slat) AS ?b).
+      BIND(?a*?a + ?b*?b AS ?d).
+    }
+    ORDER BY ?d
+    LIMIT 10
+  }
+  ?s ?p ?o.
+  OPTIONAL { ?s schema:priceSpecification ?price. ?price ?pricep ?priceo. }
+  OPTIONAL { ?s schema:address ?address. ?address ?addressp ?addresso. }
+  OPTIONAL { ?s schema:address/schema:addressCountry ?country. ?country ?countryp ?countryo. }
+  OPTIONAL { ?s schema:image ?img. ?img ?imgp ?imgo. }
+  OPTIONAL { ?s schema:geo ?geo. ?geo ?geop ?geoo. }
+}
