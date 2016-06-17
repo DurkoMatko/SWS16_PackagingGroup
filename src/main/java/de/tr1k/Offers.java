@@ -52,42 +52,54 @@ public class Offers{
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response offerList(@QueryParam("lon") String lon,
-							     @QueryParam("lat") String lat,
-							     @QueryParam("radius") String radius,
-							     @QueryParam("city") String city,
-							     @QueryParam("maxprice") String maxprice,
-							     @QueryParam("minprice") String minprice,
-							     @QueryParam("order") String order,
-							     @QueryParam("reverse") String reverse,
-								 @QueryParam("offset") String offset,
-								 @QueryParam("limit") String limit){
+	public Response offerList(
+      @QueryParam("lon") String lon,
+      @QueryParam("lat") String lat,
+      @QueryParam("radius") String radius,
+      @QueryParam("city") String city,
+      @QueryParam("maxprice") String maxprice,
+      @QueryParam("minprice") String minprice,
+      @QueryParam("type") String type,
+      @QueryParam("order") String order,
+      @QueryParam("reverse") String reverse,
+      @QueryParam("offset") String offset,
+      @QueryParam("limit") String limit
+      ){
 
     // Location ?
     boolean geoGiven = lat!=null && lon!=null;
     String qBindDistance = "";
-    if (geoGiven) qBindDistance = "BIND((?longitude - "+ lon +")*(?longitude-"+lon+")+(?latitude - "+ lat +")*(?latitude - "+ lat +") AS ?distance)\n";
+    if (geoGiven) {
+      qBindDistance = qBindDistance
+        + "?s schema:offeredBy/schema:geo/schema:longitude ?slon.\n"
+        + "?s schema:offeredBy/schema:geo/schema:latitude ?slat.\n"
+        + "BIND(47.16 AS ?lat).\n"
+        + "BIND(11.24 AS ?lon).\n"
+        + "BIND((?lon-?slon) AS ?a).\n"
+        + "BIND((?lat-?slat) AS ?b).\n"
+        + "BIND(?a*?a + ?b*?b AS ?distance).\n"
+        ;
+    }
 
     // Filtering
-    boolean radiusGiven = radius!=null;
-    double latLongDelta[] = null;
-    if (geoGiven && radiusGiven) {
-      latLongDelta=Helpers.radiusToLonLat(radius, lat);
-    }
     String qFiltering = "";
-    if(geoGiven && radiusGiven) {
-      qFiltering = qFiltering
-        + "FILTER (?longitude - " + lon + "<" + String.valueOf(latLongDelta[1])
-        + " && ?longitude -" + lon + " >- " + String.valueOf(latLongDelta[1])
-        + " && ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])
-        + " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ").\n";
+    if(type!=null) qFiltering += "?s rdf:type schema:" + type + ".\n";
+
+    if(geoGiven && radius!=null) {
+      double dRadius = Double.parseDouble(radius);
+      double dRSquared = dRadius * dRadius;
+      qFiltering += "FILTER (?distance < " + String.valueOf(dRSquared) +").\n";
     }
+
+    if(maxprice!=null || minprice!=null)
+      qFiltering += "?s schema:priceSpecification/schema:price ?price.\n";
     if(maxprice!=null)
       qFiltering += "FILTER (?price < "+ maxprice+ ").\n";
     if(minprice!=null)
       qFiltering += "FILTER (?price > "+ minprice+ ").\n";
+
     if(city!=null) {
-  		qFiltering += "?address schema:addressLocality ?locality.\n";
+  		qFiltering += "?s schema:offeredBy/schema:address/schema:addressLocality ?locality.\n";
       qFiltering += "FILTER (REGEX (?locality,\""+city+"\"))\n";
     }
 
@@ -98,97 +110,61 @@ public class Offers{
     else
       qOrderBy += "ASC";
     if(order!=null){
-      if(order.equals("price")) qOrderBy += "(?price)";
+      if(order.equals("serialNumber")) qOrderBy += "(?serialNumber)";
+      if(order.equals("distance") && geoGiven) qOrderBy += "(?distance)";
     }
     else if (geoGiven) {
       qOrderBy += "(?distance)";
     }
     else {
-      qOrderBy += "(?serial)";
+      qOrderBy += "(?serialNumber)";
     }
     qOrderBy += "\n";
 
     // Pagination
     String qPagination = "";
-    if(offset!=null) qPagination = "OFFSET "+ offset + " ";
+    if(offset!=null) qPagination += "OFFSET "+ offset + " ";
     if(limit!=null) qPagination += "LIMIT " + limit;
-    else qPagination += "LIMIT 10";
+    else qPagination += "LIMIT 5";
 
     // Build query
-    String query = ""
-      + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-      + "PREFIX schema: <http://schema.org/>\n"
-      + "	CONSTRUCT {  \n"
-      + "	  ?offerlnk rdf:type schema:Offer;    \n"
-      + "	    schema:offeredBy ?hotel;\n"
-      + "	    schema:teaser ?teaser;\n"
-      + "	    schema:image ?img;\n"
-      + "	    schema:priceSpecification ?priceSpec.\n"
-      + "	  ?img schema:contentUrl ?imgUrl.\n"
-      + "	  ?priceSpec schema:priceCurrency ?currency;\n"
-      + "	    schema:price ?price.\n"
-      + "	} WHERE { \n"
-      + "	  ?offer rdf:type schema:Offer; \n"
-      + "	    schema:serialNumber ?serial;	\n"
-      + "	    schema:offeredBy ?hotel.\n"
-      + "   ?hotel schema:geo ?geo.\n"
-      + "   ?geo schema:latitude ?latitude;\n"
-      + "        schema:longitude ?longitude. \n"
-      + qFiltering
-      + "	OPTIONAL {   \n"
-      + "	    ?offer schema:priceSpecification ?priceSpec. \n"
-      + "	    ?priceSpec schema:priceCurrency ?currency.\n"
-      + "	    ?priceSpec schema:price ?price.\n"
-      + "	}  "
-      + "	OPTIONAL {   \n "
-      + "	    ?offer schema:image ?img.\n"
-      + "	    ?img schema:contentUrl ?imgUrl.\n"
-      + "	} \n"
-      + "	OPTIONAL{ \n"
-      + "	    ?offer schema:teaser ?teaser.\n"
-      + "	}\n"
-      + "	BIND(IRI(CONCAT(\"" + urlprefix + "\",?serial)) AS ?offerlnk)\n"
-      + qBindDistance
-      + "}"
-      + qOrderBy
-      + qPagination ;
+    String select = ""
+      + "    SELECT ?s WHERE {\n"
+      + "      ?s rdf:type schema:Offer.\n"
+      + "      ?s schema:serialNumber ?serialNumber.\n"
+      +        qFiltering
+      +        qBindDistance
+      + "    }\n"
+      +      qOrderBy
+      +      qPagination
+      ;
 
-    // Execute
-		Model results = QueryExecutionFactory.sparqlService(dbUri, query).execDescribe();
-		ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
-		return Response.status(200).entity(outputStream.toString()).build();
+    String query = Helpers.queryFromInnerSelect(select);
+
+    Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
+    ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
+    return Response.status(200).entity(outputStream.toString()).build();
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{serial}")
-	public Response offerDetail(@PathParam("serial") String serial){
-		Model results = QueryExecutionFactory.sparqlService(dbUri, ""
-				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-				+ "PREFIX schema: <http://schema.org/>"
-				+ ""
-				+ "CONSTRUCT {"
-				+ "  ?offerlnk ?p ?o."
-				+ "    ?img ?imgp ?imgo."
-				+ "    ?price ?pricep ?priceo."
-				+ "}"
-				+ "WHERE {"
-				+ "  ?offer rdf:type schema:Offer;"
-				+ "       schema:serialNumber \"" + serial + "\";"
-				+ "  ?p ?o;"
-				+ "  OPTIONAL {"
-				+ "    ?offer schema:priceSpecification ?price."
-				+ "      ?price ?pricep ?priceo."
-				+ "  }"
-				+ "  OPTIONAL {"
-				+ "    ?offer schema:image ?img."
-				+ "      ?img ?imgp ?imgo."
-				+ "  }"
-				+ "  BIND(IRI(\"" + urlprefix + "/" + serial + "\") AS ?offerlnk)"
-				+ "}"
-				).execDescribe();
+	@Path("{serialNumber}")
+	public Response offerDetail(
+      @PathParam("serialNumber") String serialNumber
+      ){
 
-		ByteArrayOutputStream outputStream =Helpers.modelToJsonLD(results);
-		return Response.status(200).entity(outputStream.toString()).build();
+    // Build query
+    String select = ""
+      + "    SELECT ?s WHERE {\n"
+      + "      ?s rdf:type schema:Offer.\n"
+      + "      ?s schema:serialNumber \"" + serialNumber + "\".\n"
+      + "    }\n"
+      ;
+
+    String query = Helpers.queryFromInnerSelect(select);
+
+    Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
+    ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
+    return Response.status(200).entity(outputStream.toString()).build();
 	}
 }
