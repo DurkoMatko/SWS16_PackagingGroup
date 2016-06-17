@@ -3,6 +3,6 @@ PREFIX schema: <http://schema.org/>
 
 INSERT { ?hotel schema:branchCode ?id }
 WHERE {
-  ?hotel rdf:type schema:LodgingBusiness.
-  BIND(strafter(str(?hotel), "sws16/ServicePackaging/api/hotels/") AS ?id)
+  ?hotel rdf:type schema:LocalBusiness.
+  BIND(strafter(str(?hotel), "businesses/") AS ?id)
 }

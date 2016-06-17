@@ -1,0 +1,12 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <http://schema.org/>
+
+DELETE {?offer ?p ?o. ?hotel schema:makesOffer ?offer }
+INSERT {?newOffer ?p ?o. ?hotel schema:makesOffer ?newOffer }
+WHERE {
+  ?offer rdf:type schema:Offer;
+    schema:serialNumber ?serial;
+    ?p ?o.
+  ?hotel schema:makesOffer ?offer.
+  BIND(URI(CONCAT("http://localhost:8080/offers/",?serial)) As ?newOffer)
+}

@@ -5,6 +5,6 @@ WHERE {
   FILTER REGEX(STR(?uriOld), "http://tourpack.redlink.io/seekda/2015/") .
   BIND (URI(REPLACE(STR(?uriOld),
         "http://tourpack.redlink.io/seekda/2015/",
-        "http://localhost:8080/sws16/ServicePackaging/api/hotels/")
+        "http://localhost:8080/businesses/")
     ) AS ?uriNew)
 }
