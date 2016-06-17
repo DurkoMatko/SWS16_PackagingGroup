@@ -48,7 +48,7 @@ This will take a serious amount of time.
 Assuming, that you you have Apache maven installed, a simple
 
 ```sh
-mvn clean install exec:java
+make run
 ```
 
 should suffice to build an bring up the request handler. It will listen 
