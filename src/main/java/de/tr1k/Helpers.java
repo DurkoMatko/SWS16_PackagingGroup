@@ -38,7 +38,6 @@ public class Helpers{
 		      + "PREFIX schema: <http://schema.org/>\n"
 		      + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 		      + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-		      + "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>"
 		      + "CONSTRUCT {\n"
 		      + "  ?s ?p ?o.\n"
 		      + "  ?img ?imgp ?imgo.\n"
