@@ -38,7 +38,10 @@ fuseki with
 ./start-fuseki.sh
 ```
 
-from within the repository's base folder.
+from within the repository's base folder. The script waits some time for 
+the server starting up and finishing it's internal reasoning on the 
+provided dataset and then executes the scripts found in *sparql/init*.  
+This will take a serious amount of time.
 
 ### Request handler
 
