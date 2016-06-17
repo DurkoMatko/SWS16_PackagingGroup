@@ -89,6 +89,11 @@ public class Businesses{
       qFiltering += "FILTER (?distance < " + String.valueOf(dRSquared) +").\n";
     }
 
+    if(city!=null) {
+  		qFiltering += "?s schema:address/schema:addressLocality ?locality.\n";
+      qFiltering += "FILTER (REGEX (?locality,\""+city+"\"))\n";
+    }
+
     // Ordering
     String qOrderBy = "ORDER BY ";
     if(reverse!=null && order.equals("true"))
