@@ -80,7 +80,7 @@
 
 <http://www.streetfood-festival.eu/info.html> a schema:Festival .
 
-<http://www.streetfood-festival.eu/info.html> schema:Description "Travel around the Europe"^^xsd:string .
+<http://www.streetfood-festival.eu/info.html> schema:description "Travel around the Europe"^^xsd:string .
 
 <http://www.streetfood-festival.eu/info.html> schema:name "European food festival"^^xsd:string .
 
@@ -100,7 +100,7 @@
 
 <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:name "Sudenfall"^^xsd:string .
 
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:Description "Ballet performance"^^xsd:string .
+<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:description "Ballet performance"^^xsd:string .
 
 <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:startDate "2016-06-27"^^xsd:string .
 
@@ -118,7 +118,7 @@
 
 <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:name "Salzburger Frauenlauf"^^xsd:string .
 
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:Description "5km + 10km"^^xsd:string .
+<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:description "5km + 10km"^^xsd:string .
 
 <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:startDate "2016-07-03"^^xsd:string .
 
@@ -134,7 +134,7 @@
 
 <http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:name "European Football Championship - Public Viewing"^^xsd:string .
 
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:Description "Watch Slovakian national team win the title"^^xsd:string .
+<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:description "Watch Slovakian national team win the title"^^xsd:string .
 
 <http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:endDate "2016-07-10"^^xsd:string .
 
@@ -148,11 +148,11 @@
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> a schema:Hostel .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:BranchCode "KolpingHaus".
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:branchCode "KolpingHaus".
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:priceRange "€50-"^^xsd:string .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:Description "Favourable holidays in Salzburg"^^xsd:string .
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:description "Favourable holidays in Salzburg"^^xsd:string .
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:openingHours "Nonstop"^^xsd:string .
 
@@ -166,11 +166,11 @@
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> a schema:BedAndBreakfast .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:BranchCode "InnHotelPremium".
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:branchCode "InnHotelPremium".
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:priceRange "€70-130€"^^xsd:string .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:Description "Nice B&B not far from city centre"^^xsd:string .
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:description "Nice B&B not far from city centre"^^xsd:string .
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:openingHours "Mo-Sun 7:00-22:00"^^xsd:string .
 
@@ -184,11 +184,11 @@
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> a schema:Motel .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:BranchCode "MotelInn".
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:branchCode "MotelInn".
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:priceRange "30€-60€"^^xsd:string .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:Description "Nice motel for even nicer price"^^xsd:string .
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:description "Nice motel for even nicer price"^^xsd:string .
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:openingHours "Nonstop"^^xsd:string .
 
@@ -203,11 +203,11 @@
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> a schema:Hotel .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:BranchCode "HotelIBK".
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:branchCode "HotelIBK".
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:priceRange "70€-200€"^^xsd:string .
 
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:Description "Beautiful hotel in the city centre"^^xsd:string .
+<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:description "Beautiful hotel in the city centre"^^xsd:string .
 
 <http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:openingHours "Mo-Sun 09:00-14:30"^^xsd:string .
 
