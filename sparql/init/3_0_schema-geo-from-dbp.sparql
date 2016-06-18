@@ -1,0 +1,11 @@
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+
+INSERT{ ?s schema:geo [schema:latitude ?lat; schema:longitude ?lon] }
+WHERE {
+  ?s geo:long ?lon;
+    geo:lat ?lat.
+  FILTER NOT EXISTS { ?s schema:geo [] }
+}
