@@ -7,3 +7,33 @@
   ->
   (?o schema:offeredBy ?s)
   ]
+
+[dboNaturalPlace:
+  (?s rdf:type dbo:NaturalPlace)
+  ->
+  (?s rdf:type schema:TouristAttraction)
+  ]
+
+[dboMuseum:
+  (?s rdf:type dbo:Museum)
+  ->
+  (?s rdf:type schema:TouristAttraction)
+  ]
+
+[dboArchitecuralStructure:
+  (?s rdf:type dbo:ArchitecturalStructure)
+  ->
+  (?s rdf:type schema:TouristAttraction)
+  ]
+
+[dboOperaHouse:
+  (?s rdf:type dbo:operaHouse)
+  ->
+  (?s rdf:type schema:TouristAttraction)
+  ]
+
+[dboVenue:
+  (?s rdf:type dbo:venue)
+  ->
+  (?s rdf:type schema:TouristAttraction)
+  ]
