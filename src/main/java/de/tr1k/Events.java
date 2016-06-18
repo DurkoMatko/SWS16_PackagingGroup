@@ -26,47 +26,69 @@ public class Events {
 							   @QueryParam("startDate") String startDate,
 							   @QueryParam("endDate") String endDate,
 							   @QueryParam("offset") String offset,
-							   @QueryParam("limit") String limit){
+							   @QueryParam("limit") String limit,
+							   @QueryParam("type") String type,
+							   @QueryParam("reverse") String reverse){
 
 			Model results = null;
-			String radiusQuery="";
-			String startDateQuery = "";
-			String endDateQuery = "";
+			String radiusSubQ="";
+			String startDateSubQ = "";
+			String endDateSubQ = "";
+			String orderSubQ="";
+			String bindDistSubQ="";
+			String limitSubQ="";
+			String offsetSubQ="";
+			String typeSubQ="";
 			if(radius!=null && lon!=null && lat!=null){
 				double latLongDelta[] =Helpers.radiusToLonLat(radius, lat);
-				radiusQuery = "  FILTER (?longitude - "+ lon +"<" + String.valueOf(latLongDelta[1])+ " && ?longitude -"+lon+" >-" + String.valueOf(latLongDelta[1])+ "&& ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])+ " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ")";
+				radiusSubQ = "schema:geo ?geo."
+					      + "  ?geo schema:latitude ?latitude;"
+					      + "       schema:longitude ?longitude."
+						  + "  FILTER (?longitude - "+ lon +"<" + String.valueOf(latLongDelta[1])+ " && ?longitude -"+lon+" >-" + String.valueOf(latLongDelta[1])+ "&& ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])+ " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ")";
 			}
-			if(startDate != null){
-				startDateQuery ="FILTER (xsd:date(?startDate) > \"" + startDate + "\"^^xsd:date)";
+			if(type!=null) {
+				typeSubQ += "?s rdf:type schema:" + type + ";\n";
 			}
-			if(endDate != null){
-				endDateQuery ="FILTER (xsd:date(?endDate) < \"" + endDate + "\"^^xsd:date)";
+			else {
+				typeSubQ += "?s rdf:type schema:Event;\n";
 			}
 			
-			String query = ""
-					+ "PREFIX schema: <http://schema.org/>\n"
-					+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-					+ "CONSTRUCT {"
-					+ "  ?event rdf:type schema:Event;"
-					+ "    schema:name ?name;"
-					+ "	   schema:geo ?geo."
-					+ "	 ?geo schema:longitude ?longitude;"
-					+ "		schema:latitude ?latitude."
-					+ "}"
-					+ "WHERE {"
-					+ "  ?event rdf:type schema:Event;"
-					+ "    schema:name ?name;"
-					+ "	   schema:geo ?geo;"
-					+ "    schema:startDate ?startDate;"
-					+ "    schema:endDate ?endDate."
-					+ "	 ?geo schema:longitude ?longitude;"
-					+ "		schema:latitude ?latitude."
-					+ "  " 
-					+ radiusQuery
-					+ startDateQuery 
-					+ endDateQuery;
-					query = query + "}";
+			if(startDate != null){
+				startDateSubQ ="FILTER (xsd:date(?startDate) > \"" + startDate + "\"^^xsd:date)";
+			}
+			if(endDate != null){
+				endDateSubQ ="FILTER (xsd:date(?endDate) < \"" + endDate + "\"^^xsd:date)";
+			}
+			if(lon!=null && lat!=null){
+				bindDistSubQ = "   BIND((?longitude - "+ lon +")*(?longitude-"+lon+") +  (?latitude - "+ lat +")*(?latitude - "+ lat +")  as ?distance)";
+				if(reverse=="false" || reverse==null)
+					orderSubQ = "ORDER BY ASC(?distance)";
+				else
+					orderSubQ = "ORDER BY DESC(?distance)";
+			}
+			if(limit!=null){
+				limitSubQ="LIMIT "+limit;
+			}
+			else{
+				limitSubQ="LIMIT "+20;
+			}
+			if(offset!=null){
+				offsetSubQ="OFFSET "+offset;
+			}
+			// Build query
+		    String select = ""
+		      + "    SELECT ?s WHERE {\n"
+		      +        typeSubQ
+		      +        radiusSubQ
+		      +        bindDistSubQ
+		      +        startDateSubQ
+		      +        endDateSubQ
+		      + "    }\n"
+		      +      limitSubQ
+		      +      offsetSubQ
+		      ;
+		    
+		    String query = Helpers.queryFromInnerSelect(select);
 		
 		results = QueryExecutionFactory.sparqlService(dbUri, query).execConstruct();
 		ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
