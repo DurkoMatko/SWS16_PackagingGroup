@@ -47,87 +47,87 @@ import org.apache.jena.util.FileManager;
 
 @Path("attractions")
 public class Attractions{
-	private String urlprefix = "http://localhost:8080/sws16/ServicePackaging/api";
-	private String dbUri = "http://localhost:3030/ds";
+  private String urlprefix = "http://localhost:8080/sws16/ServicePackaging/api";
+  private String dbUri = "http://localhost:3030/ds";
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response attraction(@QueryParam("lon") String lon,
+  public Response attractionList(
+      @QueryParam("lon") String lon,
       @QueryParam("lat") String lat,
       @QueryParam("radius") String radius,
+      @QueryParam("order") String order,
+      @QueryParam("type") String type,
+      @QueryParam("reverse") String reverse,
       @QueryParam("offset") String offset,
-      @QueryParam("limit") String limit){
+      @QueryParam("limit") String limit
+      ){
 
-    if(offset!=null && limit==null){
-      return Response.status(422).entity("The request was well-formed but was unable to be followed due to semantic errors - Unexpected parameters combination").build();
-    }
-
-    String query="";
-    if(lat!=null && lon!=null){
-      double latLongDelta[]=null;
-      if(radius!=null){
-        latLongDelta= Helpers.radiusToLonLat(radius, lat);
-      }
-      query="PREFIX schema: <http://schema.org/>\n"
-        + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-        + "PREFIX dbo: <http://dbpedia.org/ontology/>\n"
-        + "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n"
-        + "CONSTRUCT{\n"
-        + " ?subject rdf:type schema:TouristAttraction;\n"
-        + "          geo:lat ?latitude;\n"
-        + "			 geo:long ?longitude.\n}"
-        + "WHERE {\n"
-        + "  ?subject rdf:type schema:TouristAttraction;\n"
-        + "         geo:lat ?latitude;\n"
-        + "			geo:long ?longitude.\n";
-      if(radius!=null){
-        query = query + "FILTER (?longitude - "+ lon +"<" + String.valueOf(latLongDelta[1])+ " && ?longitude -"+lon+" >-" + String.valueOf(latLongDelta[1])+ " && ?latitude - "+ lat +" > -" + String.valueOf(latLongDelta[0])+ " && ?latitude- "+ lat +"<"+String.valueOf(latLongDelta[0])+ ")\n";
-      }
-      query=query+ "} ORDER BY ASC((?longitude - "+ lon +")*(?longitude-"+lon+")"
-        + "  +  (?latitude - "+ lat +")*(?latitude - "+ lat +"))";
-      //pagination
-      if(offset!=null && limit !=null){
-        query = query + "OFFSET "+offset+" LIMIT"+limit;
-      }
-      else if(offset==null && limit !=null){
-        query = query + " LIMIT " + limit;
-      }
-      else{
-        query = query + " LIMIT 10\n";
-      }
-    }
-    else if(lat!=null || lon !=null || radius!=null){
-      return Response.status(422).entity("The request was well-formed but was unable to be followed due to semantic errors - Unexpected parameters combination").build();
-    }
-    else{
-      query="PREFIX schema: <http://schema.org/>\n"
-        + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-        + "PREFIX dbo: <http://dbpedia.org/ontology/>\n"
-        + "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n"
-        + "CONSTRUCT{\n"
-        + " ?subject rdf:type schema:TouristAttraction;\n"
-        + "          geo:lat ?latitude;\n"
-        + "			 geo:long ?longitude.\n}"
-        + "WHERE {\n"
-        + "  ?subject rdf:type schema:TouristAttraction;\n"
-        + "         geo:lat ?latitude;\n"
-        + "			geo:long ?longitude.\n"
-        + "}";
-      //pagination
-      if(offset!=null && limit !=null){
-        query = query + "OFFSET "+offset+" LIMIT"+limit;
-      }
-      else if(offset==null && limit !=null){
-        query = query + " LIMIT " + limit;
-      }
-      else{
-        query = query + " LIMIT 10\n";
-      }
+    // Location ?
+    boolean geoGiven = lat!=null && lon!=null;
+    String qBindDistance = "";
+    if (geoGiven) {
+      qBindDistance = qBindDistance
+        + "?s schema:geo/schema:longitude ?slon.\n"
+        + "?s schema:geo/schema:latitude ?slat.\n"
+        + "BIND(47.16 AS ?lat).\n"
+        + "BIND(11.24 AS ?lon).\n"
+        + "BIND((?lon-?slon) AS ?a).\n"
+        + "BIND((?lat-?slat) AS ?b).\n"
+        + "BIND(?a*?a + ?b*?b AS ?distance).\n"
+        ;
     }
 
-    Model results = QueryExecutionFactory.sparqlService(dbUri, query).execDescribe();
+    // Filtering
+    String qFiltering = "";
+    if(type!=null) qFiltering += "?s rdf:type schema:" + type + ".\n";
+
+    if(geoGiven && radius!=null) {
+      double dRadius = Double.parseDouble(radius);
+      double dRSquared = dRadius * dRadius;
+      qFiltering += "FILTER (?distance < " + String.valueOf(dRSquared) +").\n";
+    }
+
+    // Ordering
+    String qOrderBy = "ORDER BY ";
+    if(reverse!=null && order.equals("true"))
+      qOrderBy += "DESC";
+    else
+      qOrderBy += "ASC";
+    if(order!=null){
+      if(order.equals("uri")) qOrderBy += "(?s)";
+      if(order.equals("distance") && geoGiven) qOrderBy += "(?distance)";
+    }
+    else if (geoGiven) {
+      qOrderBy += "(?distance)";
+    }
+    else {
+      qOrderBy += "(?s)";
+    }
+    qOrderBy += "\n";
+
+    // Pagination
+    String qPagination = "";
+    if(offset!=null) qPagination += "OFFSET "+ offset + " ";
+    if(limit!=null) qPagination += "LIMIT " + limit;
+    else qPagination += "LIMIT 5";
+
+    // Build query
+    String select = ""
+      + "    SELECT ?s WHERE {\n"
+      + "      ?s rdf:type schema:TouristAttraction.\n"
+      +        qFiltering
+      +        qBindDistance
+      + "    }\n"
+      +      qOrderBy
+      +      qPagination
+      ;
+
+    String query = Helpers.queryFromInnerSelect(select);
+
+    Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
     return Response.status(200).entity(outputStream.toString()).build();
-  }
+      }
 
 }
