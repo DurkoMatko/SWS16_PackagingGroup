@@ -27,7 +27,7 @@
   ; ja:content [
       ja:externalContent
         <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/touristic_given_new.rdf>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/jetty/data/mock.ttl>,
+        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/mock.ttl>,
         <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/ConcertHalls.ttl>,
         <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/museums.ttl>,
         <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/operaHouses.ttl>,
