@@ -71,8 +71,8 @@ public class Businesses{
       qBindDistance = qBindDistance
         + "?s schema:geo/schema:longitude ?slon.\n"
         + "?s schema:geo/schema:latitude ?slat.\n"
-        + "BIND(47.16 AS ?lat).\n"
-        + "BIND(11.24 AS ?lon).\n"
+        + "BIND(" + lat + " AS ?lat).\n"
+        + "BIND(" + lon + " AS ?lon).\n"
         + "BIND((?lon-?slon) AS ?a).\n"
         + "BIND((?lat-?slat) AS ?b).\n"
         + "BIND(?a*?a + ?b*?b AS ?distance).\n"
