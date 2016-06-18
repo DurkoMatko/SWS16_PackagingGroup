@@ -1,220 +1,133 @@
-@prefix redlink: <http://data.redlink.io/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix context: <http://data.redlink.io/context/> .
 @prefix schema: <http://schema.org/> .
-@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
-@prefix sesame: <http://www.openrdf.org/schema/sesame#> .
-@prefix fn: <http://www.w3.org/2005/xpath-functions#> .
-@prefix gn: <http://www.geonames.org/ontology#> .
-@prefix lode: <http://linkedevents.org/ontology/> .
-@prefix cal: <http://www.w3.org/2002/12/cal#> .
-@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
-@prefix xs: <http://www.w3.org/2001/XMLSchema> .
-@prefix acco: <http://purl.org/acco/ns#> .
-@prefix time: <http://www.w3.org/2006/time#> .
-@prefix gr: <http://purl.org/goodrelations/v1#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
 
-<http://www.mozarteum.at/en/museums/mozarts-birthplace.html> a schema:TouristAttraction .
-
-<http://www.mozarteum.at/en/museums/mozarts-birthplace.html> schema:image "http://www.planetware.com/photos-large/A/mozarts-birthplace.jpg"^^xsd:anyURI .
-
-<http://www.mozarteum.at/en/museums/mozarts-birthplace.html> schema:name "Mozart Birthplace"^^xsd:string .
-
-<http://www.mozarteum.at/en/museums/mozarts-birthplace.html> schema:address "Stiftung Mozarteum Salzburg, Schwarzstr. 26, 5020 Salzburg"^^xsd:string .
-
-<http://www.mozarteum.at/en/museums/mozarts-birthplace.html> schema:telephone "+43 (0) 662 889 40 -0"^^xsd:string .
-
-<http://www.mozarteum.at/en/museums/mozarts-birthplace.html> schema:geo [
-	schema:longitude "47.82446";
-	schema:latitude "13.0119";
+<http://sws16.tr1k.de:8080/resources/MOCK_ATTRACTION> a schema:TouristAttraction ;
+  schema:url <http://www.mozarteum.at/en/museums/mozarts-birthplace.html> ;
+  schema:image "http://www.planetware.com/photos-large/A/mozarts-birthplace.jpg"^^xsd:anyURI ;
+  schema:name "Mozart Birthplace"^^xsd:string ;
+  schema:address "Stiftung Mozarteum Salzburg, Schwarzstr. 26, 5020 Salzburg"^^xsd:string ;
+  schema:telephone "+43 (0) 662 889 40 -0"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "47.82446";
+  	schema:latitude "13.0119";
 ].
 
 
+<http://sws16.tr1k.de:8080/resources/MOCK_RESTAURANT> a schema:Restaurant ;
+  schema:url <http://www.restaurantherzl.at/de/> ;
+  schema:image "http://assets.restaurantherzl.at/restaurant/5303/assets/XLGallery/Restaurant-sHerzl-Hotel-goldener-Hirsch-Salzburg.jpg"^^xsd:anyURI ;
+  schema:name "Restaurant Herzl"^^xsd:string ;
+  schema:address "Getreidegasse 37, 5020 Salzburg"^^xsd:string ;
+  schema:telephone "+43 662 8084"^^xsd:string ;
+  schema:openingHours "Mo-Sun 10:00-24:00"^^xsd:string ;
+  schema:faxNumber "+43 662 8084 845"^^xsd:string ;
+  schema:ReserveAction "http://www.restaurantherzl.at/Reservierung/de/"^^xsd:anyURI ;
+  schema:geo [
+  	schema:longitude "47.82646";
+  	schema:latitude "13.0219";
+].
 
-<http://www.restaurantherzl.at/de/> a schema:Restaurant .
+<http://sws16.tr1k.de:8080/resources/MOCK_FESTIVAL> a schema:Festival ;
+  schema:url <http://www.salzburgerfestspiele.at> ;
+  schema:image "http://magazin.salzburgerland.com/wp-content/uploads/2012/06/festspielnaechte8.jpg"^^xsd:anyURI ;
+  schema:name "Salzburger Festspiele"^^xsd:string ;
+  schema:endDate "2016-08-31"^^xsd:string ;
+  schema:startDate "2016-07-22"^^xsd:string ;
+  schema:BuyAction "https://www.salzburg-ticketshop.at/de/salzburger_festspiele"^^xsd:anyURI ;
+  schema:geo [
+	  schema:longitude "47.92446";
+	  schema:latitude "13.0419";
+].
 
-<http://www.restaurantherzl.at/de/> schema:image "http://assets.restaurantherzl.at/restaurant/5303/assets/XLGallery/Restaurant-sHerzl-Hotel-goldener-Hirsch-Salzburg.jpg"^^xsd:anyURI .
+<https://sws16.tr1k.de:8080/resources/MOCK_FESTIVALA> a schema:Festival ;
+  schema:url <http://www.streetfood-festival.eu/info.html> ;
+  schema:description "Travel around the Europe"^^xsd:string ;
+  schema:name "European food festival"^^xsd:string ;
+  schema:endDate "2016-06-29"^^xsd:string ;
+  schema:startDate "2016-06-27"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "48.0006";
+  	schema:latitude "13.0719";
+].
 
-<http://www.restaurantherzl.at/de/> schema:name "Restaurant Herzl"^^xsd:string .
+<http://sws16.tr1k.de:8080/resources/MOCK_THEATEREVENT> a schema:TheaterEvent ;
+  schema:url <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> ;
+  schema:director "Peter Breuer / Alexander Korobko"^^xsd:string ;
+  schema:name "Sudenfall"^^xsd:string ;
+  schema:description "Ballet performance"^^xsd:string ;
+  schema:startDate "2016-06-27"^^xsd:string ;
+  schema:endDate "2016-06-27"^^xsd:string ;
+  schema:BuyAction "http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111/buyTickets"^^xsd:anyURI ;
+  schema:geo [
+  	schema:longitude "47.987N";
+  	schema:latitude "13.0355E";
+].
 
-<http://www.restaurantherzl.at/de/> schema:address "Getreidegasse 37, 5020 Salzburg"^^xsd:string .
+<http://sws16.tr1k.de:8080/resources/MOCK_SPORTEVENT> a schema:SportsEvent ;
+  schema:url <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> ;
+  schema:name "Salzburger Frauenlauf"^^xsd:string ;
+  schema:description "5km + 10km"^^xsd:string ;
+  schema:startDate "2016-07-03"^^xsd:string ;
+  schema:endDate "2016-07-03"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "47.799";
+  	schema:latitude "13.0303";
+].
 
-<http://www.restaurantherzl.at/de/> schema:telephone "+43 662 8084"^^xsd:string .
+<http://sws16.tr1k.de:8080/restaurant/MOCK_SPORTEVENTA> a schema:SportsEvent ;
+  schema:url <http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> ;
+  schema:name "European Football Championship - Public Viewing"^^xsd:string ;
+  schema:description "Watch Slovakian national team win the title"^^xsd:string ;
+  schema:endDate "2016-07-10"^^xsd:string ;
+  schema:startDate "2016-06-10"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "47.989";
+  	schema:latitude "13.04";
+].
 
-<http://www.restaurantherzl.at/de/> schema:openingHours "Mo-Sun 10:00-24:00"^^xsd:string .
+<http://sws16.tr1k.de:8080/resources/KolpingHaus> a schema:Hostel ;
+  schema:branchCode "KolpingHaus";
+  schema:priceRange "€50-"^^xsd:string ;
+  schema:description "Favourable holidays in Salzburg"^^xsd:string ;
+  schema:openingHours "Nonstop"^^xsd:string ;
+  schema:name "Kolping hostel"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "47.911";
+  	schema:latitude "13.0403";
+].
 
-<http://www.restaurantherzl.at/de/> schema:faxNumber "+43 662 8084 845"^^xsd:string .
+<http://sws16.tr1k.de:8080/resources/InnHotelPremium> a schema:BedAndBreakfast ;
+  schema:branchCode "InnHotelPremium";
+  schema:priceRange "€70-130€"^^xsd:string ;
+  schema:description "Nice B&B not far from city centre"^^xsd:string ;
+  schema:openingHours "Mo-Sun 7:00-22:00"^^xsd:string ;
+  schema:name "Star Inn Hotel Premium Salzburg Gablerbrau"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "47.999";
+  	schema:latitude "13.040";
+].
 
-<http://www.restaurantherzl.at/de/> schema:ReserveAction "http://www.restaurantherzl.at/Reservierung/de/"^^xsd:anyURI .
-
-<http://www.restaurantherzl.at/de/> schema:geo [
-	schema:longitude "47.82646";
-	schema:latitude "13.0219";
+<http://sws16.tr1k.de:8080/resources/MotelInn> a schema:Motel ;
+  schema:branchCode "MotelInn";
+  schema:priceRange "30€-60€"^^xsd:string ;
+  schema:description "Nice motel for even nicer price"^^xsd:string ;
+  schema:openingHours "Nonstop"^^xsd:string ;
+  schema:name "Motel Inn"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "48.003";
+  	schema:latitude "13.099";
 ].
 
 
-<http://www.salzburgerfestspiele.at> a schema:Festival .
-
-<http://www.salzburgerfestspiele.at> schema:image "http://magazin.salzburgerland.com/wp-content/uploads/2012/06/festspielnaechte8.jpg"^^xsd:anyURI .
-
-<http://www.salzburgerfestspiele.at> schema:name "Salzburger Festspiele"^^xsd:string .
-
-<http://www.salzburgerfestspiele.at> schema:endDate "2016-08-31"^^xsd:string .
-
-<http://www.salzburgerfestspiele.at> schema:startDate "2016-07-22"^^xsd:string .
-
-<http://www.salzburgerfestspiele.at> schema:BuyAction "https://www.salzburg-ticketshop.at/de/salzburger_festspiele"^^xsd:anyURI .
-
-<http://www.salzburgerfestspiele.at> schema:geo [
-	schema:longitude "47.92446";
-	schema:latitude "13.0419";
-].
-
-<http://www.streetfood-festival.eu/info.html> a schema:Festival .
-
-<http://www.streetfood-festival.eu/info.html> schema:description "Travel around the Europe"^^xsd:string .
-
-<http://www.streetfood-festival.eu/info.html> schema:name "European food festival"^^xsd:string .
-
-<http://www.streetfood-festival.eu/info.html> schema:endDate "2016-06-29"^^xsd:string .
-
-<http://www.streetfood-festival.eu/info.html> schema:startDate "2016-06-27"^^xsd:string .
-
-<http://www.streetfood-festival.eu/info.html> schema:geo [
-	schema:longitude "48.0006";
-	schema:latitude "13.0719";
-].
-
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> a schema:TheaterEvent .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:director "Peter Breuer / Alexander Korobko"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:name "Sudenfall"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:description "Ballet performance"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:startDate "2016-06-27"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:endDate "2016-06-27"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:BuyAction "http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111/buyTickets"^^xsd:anyURI .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> schema:geo [
-	schema:longitude "47.987N";
-	schema:latitude "13.0355E";
-].
-
-
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> a schema:SportsEvent .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:name "Salzburger Frauenlauf"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:description "5km + 10km"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:startDate "2016-07-03"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:endDate "2016-07-03"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> schema:geo [
-	schema:longitude "47.799";
-	schema:latitude "13.0303";
-].
-
-
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> a schema:SportsEvent .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:name "European Football Championship - Public Viewing"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:description "Watch Slovakian national team win the title"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:endDate "2016-07-10"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:startDate "2016-06-10"^^xsd:string .
-
-<http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> schema:geo [
-	schema:longitude "47.989";
-	schema:latitude "13.04";
-].
-
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> a schema:Hostel .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:branchCode "KolpingHaus".
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:priceRange "€50-"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:description "Favourable holidays in Salzburg"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:openingHours "Nonstop"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:name "Kolping hostel"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/KolpingHaus> schema:geo [
-	schema:longitude "47.911";
-	schema:latitude "13.0403";
-].
-
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> a schema:BedAndBreakfast .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:branchCode "InnHotelPremium".
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:priceRange "€70-130€"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:description "Nice B&B not far from city centre"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:openingHours "Mo-Sun 7:00-22:00"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:name "Star Inn Hotel Premium Salzburg Gablerbrau"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/InnHotelPremium> schema:geo [
-	schema:longitude "47.999";
-	schema:latitude "13.040";
-].
-
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> a schema:Motel .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:branchCode "MotelInn".
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:priceRange "30€-60€"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:description "Nice motel for even nicer price"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:openingHours "Nonstop"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn>schema:name "Motel Inn"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/MotelInn> schema:geo [
-	schema:longitude "48.003";
-	schema:latitude "13.099";
-].
-
-
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> a schema:Hotel .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:branchCode "HotelIBK".
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:priceRange "70€-200€"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:description "Beautiful hotel in the city centre"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:openingHours "Mo-Sun 09:00-14:30"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:name "Hotel Innsbruck"^^xsd:string .
-
-<http://localhost:8080/sws16/ServicePackaging/api/hotels/HotelIBK> schema:geo [
-	schema:longitude "47.899";
-	schema:latitude "13.015";
+<http://sws16.tr1k.de:8080/resources/HotelIBK> a schema:Hotel ;
+  schema:branchCode "HotelIBK";
+  schema:priceRange "70€-200€"^^xsd:string ;
+  schema:description "Beautiful hotel in the city centre"^^xsd:string ;
+  schema:openingHours "Mo-Sun 09:00-14:30"^^xsd:string ;
+  schema:name "Hotel Innsbruck"^^xsd:string ;
+  schema:geo [
+  	schema:longitude "47.899";
+  	schema:latitude "13.015";
 ].
 
