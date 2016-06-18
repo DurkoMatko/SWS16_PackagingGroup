@@ -5,9 +5,9 @@ INSERT{
 	?offer schema:BuyAction ?buyActionLink
 }
 where {
-  ?hotel rdf:type schema:LodgingBusiness;
+  ?hotel rdf:type schema:LocalBusiness;
          schema:makesOffer ?offer;
          schema:branchCode ?bCode .
   ?offer schema:serialNumber ?serialNumber .
-  BIND(IRI(CONCAT("http://localhost:8080/sws16/ServicePackaging/api/hotels/",?bCode,"/buy/", ?serialNumber)) AS ?buyActionLink)
+  BIND(IRI(CONCAT("http://sws16.tr1k.de:8080/actions/",?bCode,"/buy/", ?serialNumber)) AS ?buyActionLink)
 }

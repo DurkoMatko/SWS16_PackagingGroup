@@ -8,5 +8,5 @@ WHERE {
     schema:serialNumber ?serial;
     ?p ?o.
   ?hotel schema:makesOffer ?offer.
-  BIND(URI(CONCAT("http://localhost:8080/offers/",?serial)) As ?newOffer)
+  BIND(URI(CONCAT("http://sws16.tr1k.de:8080/offers/",?serial)) As ?newOffer)
 }
