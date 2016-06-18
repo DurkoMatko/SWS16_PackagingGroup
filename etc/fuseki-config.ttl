@@ -41,7 +41,7 @@
     rdf:type ja:InfModel
   ; ja:baseModel <#schemaReasoned>
   ; ja:reasoner [
-        ja:rulesFrom <https://git.uibk.ac.at/csas7564/sws16/raw/master/etc/rules.ttl>
+        ja:rulesFrom <file:rules.ttl>
     ]
   .
 
