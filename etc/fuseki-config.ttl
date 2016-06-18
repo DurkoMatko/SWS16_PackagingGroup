@@ -26,14 +26,14 @@
     rdf:type ja:MemoryModel
   ; ja:content [
       ja:externalContent
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/touristic_given_new.rdf>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/mock.ttl>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/ConcertHalls.ttl>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/museums.ttl>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/operaHouses.ttl>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/sportVenues.ttl>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/architecturalStructures.ttl>,
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/naturalPlaces.ttl>
+        <file:../data/touristic_given_new.rdf>,
+        <file:../data/mock.ttl>,
+        <file:../data/ConcertHalls.ttl>,
+        <file:../data/museums.ttl>,
+        <file:../data/operaHouses.ttl>,
+        <file:../data/sportVenues.ttl>,
+        <file:../data/architecturalStructures.ttl>,
+        <file:../data/naturalPlaces.ttl>
     ]
   .
 
@@ -56,6 +56,6 @@
     rdf:type ja:MemoryModel
   ; ja:content [
       ja:externalContent
-        <https://git.uibk.ac.at/csas7564/sws16/raw/master/data/schema.ttl>
+        <file:../data/schema.ttl>
     ]
   .

@@ -16,24 +16,39 @@ cfgfile=$PROJECT_HOME/etc/fuseki-config.ttl
 host=http://localhost:$port
 ds=ds # This depends on the fuseki-config.ttl
 wrkdir=$tmpdir/swsfuseki
+srvc=$host/$ds
+pingquery=sparql/ping.sparql
 
 # Enforce clean start
 rm -rf $wrkdir
 mkdir $wrkdir
 
+function sep {
+  echo '################################################################################'
+}
+
 (
 
 # Wait for fuseki
 
-sleep 40;
+until ( s-query --service $srvc/query --file $pingquery > /dev/null 2>&1 )
+do
+  sleep 1
+done
 
 # Beautify data by iterating over corresponding folder
 
 for sparql in $PROJECT_HOME/sparql/init/*.sparql
 do
-  echo "# run $sparql"
-  $FUSEKI_HOME/bin/s-update --service $host/$ds/update --file $sparql
+  echo
+  echo "execute ${sparql##*/}"
+  sep
+  $FUSEKI_HOME/bin/s-update --service $srvc/update --file $sparql
 done
+
+echo
+sep
+echo Done.
 
 ) &
 
