@@ -51,7 +51,7 @@ public class Offers{
 	private String dbUri = "http://localhost:3030/ds";
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response offerList(
       @QueryParam("lon") String lon,
       @QueryParam("lat") String lat,
@@ -147,7 +147,7 @@ public class Offers{
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	@Path("{serialNumber}")
 	public Response offerDetail(
       @PathParam("serialNumber") String serialNumber

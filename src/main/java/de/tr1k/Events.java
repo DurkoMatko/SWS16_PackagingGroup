@@ -19,7 +19,7 @@ public class Events {
 		private String updateUri = "http://localhost:3030/ds/update";
 		
 		@GET
-		@Produces(MediaType.APPLICATION_JSON)
+		@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 		public Response events(@QueryParam("lon") String lon,
 							   @QueryParam("lat") String lat,
 							   @QueryParam("radius") String radius,

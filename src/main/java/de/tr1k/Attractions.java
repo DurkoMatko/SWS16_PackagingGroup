@@ -51,7 +51,7 @@ public class Attractions{
   private String dbUri = "http://localhost:3030/ds";
 
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
   public Response attractionList(
       @QueryParam("lon") String lon,
       @QueryParam("lat") String lat,

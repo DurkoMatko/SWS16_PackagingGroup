@@ -2,9 +2,7 @@ package de.tr1k;
 
 import de.tr1k.Helpers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 import java.io.ByteArrayOutputStream;
 
 import javax.ws.rs.GET;
@@ -51,7 +49,7 @@ public class Businesses{
   private String dbUri = "http://localhost:3030/ds";
 
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
   public Response businessList(
       @QueryParam("lon") String lon,
       @QueryParam("lat") String lat,
@@ -134,11 +132,11 @@ public class Businesses{
 
     Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
-    return Response.status(200).entity(outputStream.toString()).build();
+    return Response.status(200).entity(new String(outputStream.toByteArray(), Charset.forName("UTF-8")) ).build();
       }
 
   @GET
-  @Produces(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
   @Path("{branchCode}")
   public Response businessDetail(
       @PathParam("branchCode") String branchCode
