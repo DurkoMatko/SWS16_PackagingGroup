@@ -2,9 +2,9 @@
 
 ### Configure your environment here
 
-#PROJECT_HOME=$PWD
-#export FUSEKI_HOME=$HOME/opt/apache-jena-fuseki-2.3.1
-source ~/.swsrc
+PROJECT_HOME=$PWD
+export FUSEKI_HOME=$HOME/opt/apache-jena-fuseki-2.3.1
+#source ~/.swsrc
 ### Other configuration
 
 tmpdir=/tmp
