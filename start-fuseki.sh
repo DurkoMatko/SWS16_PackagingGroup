@@ -31,7 +31,7 @@ function sep {
 
 # Wait for fuseki
 
-until ( s-query --service $srvc/query --file $pingquery > /dev/null 2>&1 )
+until ( $FUSEKI_HOME/bin/s-query --service $srvc/query --file $pingquery > /dev/null 2>&1 )
 do
   sleep 1
 done
