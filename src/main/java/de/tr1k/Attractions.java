@@ -127,7 +127,7 @@ public class Attractions{
 
     Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
-    return Response.status(200).entity(outputStream.toString()).build();
+    return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(outputStream.toString()).build();
       }
 
 }

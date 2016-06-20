@@ -132,7 +132,7 @@ public class Businesses{
 
     Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
-    return Response.status(200).entity(new String(outputStream.toByteArray(), Charset.forName("UTF-8")) ).build();
+    return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(new String(outputStream.toByteArray(), Charset.forName("UTF-8")) ).build();
       }
 
   @GET
@@ -154,6 +154,6 @@ public class Businesses{
 
     Model results = QueryExecutionFactory.sparqlService(dbUri,query).execConstruct();
     ByteArrayOutputStream outputStream = Helpers.modelToJsonLD(results);
-    return Response.status(200).entity(outputStream.toString()).build();
+    return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(outputStream.toString()).build();
       }
 }
