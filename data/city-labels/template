@@ -1,0 +1,65 @@
+
+
+PREFIX  dbpedia-owl: <http://dbpedia.org/ontology/>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  dbpedia: <http://dbpedia.org/>
+PREFIX  dbo:  <http://dbpedia.org/ontology/>
+PREFIX  geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX  dbp:  <http://dbpedia.org/property/>
+PREFIX  dbr:  <http://dbpedia.org/resource/>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  dbpedia2: <http://dbpedia.org/property/>
+PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX  dc:   <http://purl.org/dc/elements/1.1/>
+CONSTRUCT 
+  { 
+    ?city geo:lat ?lat .
+    ?city geo:long ?lon .
+    ?city dbpedia-owl:abstract ?abstract .
+  }
+WHERE
+  { ?city  geo:lat               ?lat ;
+           geo:long              ?lon ;
+           dbpedia-owl:abstract  ?abstract
+      { ?city  rdf:type  dbpedia-owl:Town }
+    UNION
+      { ?city  rdf:type  dbpedia-owl:City }
+    UNION
+      { ?city  rdf:type  dbpedia-owl:Settlement }
+    ?city  rdfs:label  ?label
+      { ?city  dbpedia-owl:country  dbr:Austria }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Germany }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Italy }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Slovakia }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Hungary }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Czech_Republic }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:France }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Spain }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:England }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Switzerland }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Portugal }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Brazil }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:Romania }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:China }
+    UNION
+      { ?city  dbpedia-owl:country  dbr:United_States }
+    FILTER ( lang(?label) = "en" )
+    FILTER regex(?label,"<<city>>")
+  }
+
