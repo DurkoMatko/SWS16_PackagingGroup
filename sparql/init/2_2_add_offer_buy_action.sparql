@@ -9,5 +9,5 @@ where {
          schema:makesOffer ?offer;
          schema:branchCode ?bCode .
   ?offer schema:serialNumber ?serialNumber .
-  BIND(IRI(CONCAT("http://sws16.tr1k.de:8080/actions/",?bCode,"/buy/", ?serialNumber)) AS ?buyActionLink)
+  BIND(IRI(CONCAT("http://sws.tr1k.de/actions/",?bCode,"/buy/", ?serialNumber)) AS ?buyActionLink)
 }
