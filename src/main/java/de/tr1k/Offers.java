@@ -47,7 +47,6 @@ import org.apache.jena.util.FileManager;
 
 @Path("offers")
 public class Offers{
-	private String urlprefix = "http://localhost:8080/offers/";
 	private String dbUri = "http://localhost:3030/ds";
 
 	@GET

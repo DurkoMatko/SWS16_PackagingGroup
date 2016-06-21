@@ -47,7 +47,6 @@ import org.apache.jena.util.FileManager;
 
 @Path("attractions")
 public class Attractions{
-  private String urlprefix = "http://localhost:8080/sws16/ServicePackaging/api";
   private String dbUri = "http://localhost:3030/ds";
 
   @GET

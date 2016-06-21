@@ -14,7 +14,6 @@ import org.apache.jena.rdf.model.Model;
 
 @Path("events")
 public class Events {
-		private String urlprefix = "http://localhost:8080/sws16/ServicePackaging/api";
 		private String dbUri = "http://localhost:3030/ds";
 		private String updateUri = "http://localhost:3030/ds/update";
 		
