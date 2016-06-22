@@ -2,7 +2,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix schema: <http://schema.org/> .
 
-<http://sws16.tr1k.de:8080/resources/MOCK_ATTRACTION> a schema:TouristAttraction ;
+<http://sws.tr1k.de/events/MOCK_ATTRACTION> a schema:TouristAttraction ;
   schema:url <http://www.mozarteum.at/en/museums/mozarts-birthplace.html> ;
   schema:image "http://www.planetware.com/photos-large/A/mozarts-birthplace.jpg"^^xsd:anyURI ;
   schema:name "Mozart Birthplace"^^xsd:string ;
@@ -14,7 +14,8 @@
 ].
 
 
-<http://sws16.tr1k.de:8080/resources/MOCK_RESTAURANT> a schema:Restaurant ;
+<http://sws.tr1k.de/businesses/MOCK_RESTAURANT> a schema:Restaurant ;
+  schema:branchCode "MOCK_RESTAURANT";
   schema:url <http://www.restaurantherzl.at/de/> ;
   schema:image "http://assets.restaurantherzl.at/restaurant/5303/assets/XLGallery/Restaurant-sHerzl-Hotel-goldener-Hirsch-Salzburg.jpg"^^xsd:anyURI ;
   schema:name "Restaurant Herzl"^^xsd:string ;
@@ -28,7 +29,7 @@
   	schema:latitude "13.0219";
 ].
 
-<http://sws16.tr1k.de:8080/resources/MOCK_FESTIVAL> a schema:Festival ;
+<http://sws.tr1k.de/events/MOCK_FESTIVAL> a schema:Festival ;
   schema:url <http://www.salzburgerfestspiele.at> ;
   schema:image "http://magazin.salzburgerland.com/wp-content/uploads/2012/06/festspielnaechte8.jpg"^^xsd:anyURI ;
   schema:name "Salzburger Festspiele"^^xsd:string ;
@@ -40,7 +41,7 @@
 	  schema:latitude "13.0419";
 ].
 
-<https://sws16.tr1k.de:8080/resources/MOCK_FESTIVALA> a schema:Festival ;
+<http://sws.tr1k.de/events/MOCK_FESTIVALA> a schema:Festival ;
   schema:url <http://www.streetfood-festival.eu/info.html> ;
   schema:description "Travel around the Europe"^^xsd:string ;
   schema:name "European food festival"^^xsd:string ;
@@ -51,7 +52,7 @@
   	schema:latitude "13.0719";
 ].
 
-<http://sws16.tr1k.de:8080/resources/MOCK_THEATEREVENT> a schema:TheaterEvent ;
+<http://sws.tr1k.de/events/MOCK_THEATEREVENT> a schema:TheaterEvent ;
   schema:url <http://www.salzburg.info/en/art_culture/events_calendar/suendenfall_va-1144111> ;
   schema:director "Peter Breuer / Alexander Korobko"^^xsd:string ;
   schema:name "Sudenfall"^^xsd:string ;
@@ -64,7 +65,7 @@
   	schema:latitude "13.0355E";
 ].
 
-<http://sws16.tr1k.de:8080/resources/MOCK_SPORTEVENT> a schema:SportsEvent ;
+<http://sws.tr1k.de/events/MOCK_SPORTEVENT> a schema:SportsEvent ;
   schema:url <http://www.salzburg.info/en/art_culture/events_calendar/salzburger-frauenlauf_va-1207682> ;
   schema:name "Salzburger Frauenlauf"^^xsd:string ;
   schema:description "5km + 10km"^^xsd:string ;
@@ -75,7 +76,7 @@
   	schema:latitude "13.0303";
 ].
 
-<http://sws16.tr1k.de:8080/restaurant/MOCK_SPORTEVENTA> a schema:SportsEvent ;
+<http://sws.tr1k.de/events/MOCK_SPORTEVENTA> a schema:SportsEvent ;
   schema:url <http://www.salzburg.info/en/art_culture/events_calendar/european-football-championship-public-viewing_va-1260048> ;
   schema:name "European Football Championship - Public Viewing"^^xsd:string ;
   schema:description "Watch Slovakian national team win the title"^^xsd:string ;
@@ -86,7 +87,7 @@
   	schema:latitude "13.04";
 ].
 
-<http://sws16.tr1k.de:8080/resources/KolpingHaus> a schema:Hostel ;
+<http://sws.tr1k.de/businesses/KolpingHaus> a schema:Hostel ;
   schema:branchCode "KolpingHaus";
   schema:priceRange "€50-"^^xsd:string ;
   schema:description "Favourable holidays in Salzburg"^^xsd:string ;
@@ -97,7 +98,7 @@
   	schema:latitude "13.0403";
 ].
 
-<http://sws16.tr1k.de:8080/resources/InnHotelPremium> a schema:BedAndBreakfast ;
+<http://sws.tr1k.de/businesses/InnHotelPremium> a schema:BedAndBreakfast ;
   schema:branchCode "InnHotelPremium";
   schema:priceRange "€70-130€"^^xsd:string ;
   schema:description "Nice B&B not far from city centre"^^xsd:string ;
@@ -108,7 +109,7 @@
   	schema:latitude "13.040";
 ].
 
-<http://sws16.tr1k.de:8080/resources/MotelInn> a schema:Motel ;
+<http://sws.tr1k.de/businesses/MotelInn> a schema:Motel ;
   schema:branchCode "MotelInn";
   schema:priceRange "30€-60€"^^xsd:string ;
   schema:description "Nice motel for even nicer price"^^xsd:string ;
@@ -120,7 +121,7 @@
 ].
 
 
-<http://sws16.tr1k.de:8080/resources/HotelIBK> a schema:Hotel ;
+<http://sws.tr1k.de/businesses/HotelIBK> a schema:Hotel ;
   schema:branchCode "HotelIBK";
   schema:priceRange "70€-200€"^^xsd:string ;
   schema:description "Beautiful hotel in the city centre"^^xsd:string ;
